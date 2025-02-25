@@ -18,7 +18,10 @@ jobs:
           uses: actions/setup-node@v4
           with: 
             node-version: 16.x
-
+        - name: Setup pnpm
+          uses: pnpm/action-setup@v3 # docs https://pnpm.io/continuous-integration#github-actions
+          with:
+            version: 10.4.1
         - name: Install Packages and Build Application  # Installs npm packages and builds the Vue.js application.
           run: |
             pnpm i
