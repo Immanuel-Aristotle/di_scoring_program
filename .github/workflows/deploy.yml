@@ -23,6 +23,8 @@ jobs:
         run: |
           pnpm i
           pnpm build
+      - name: Upload artifact  # Uploads the build artifact.
+        uses: actions/upload-pages-artifact@v2
 
   deploy:
     name: Deploy Application # Defines the name of the deployment job.
