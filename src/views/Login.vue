@@ -21,8 +21,11 @@
           label-width="60px"
           class="demo-ruleForm"
         >
-          <el-form-item label="用户名" prop="username">
+          <!-- <el-form-item label="用户名" prop="username">
             <el-input v-model.number="ruleForm.username" />
+          </el-form-item> -->
+          <el-form-item label="邮箱" prop="email">
+            <el-input v-model.number="ruleForm.email" />
           </el-form-item>
           <el-form-item label="密码" prop="password">
             <el-input
@@ -79,7 +82,7 @@ import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { toggleDark, isDark } from '@/stores/dark'
 import type { FormInstance, FormRules } from 'element-plus'
-import { fetchUsers } from '@/apis/user/login'
+import supabase from '@/apis/supabase'  // Import supabase client
 
 const ruleFormRef = ref<FormInstance>()
 const router = useRouter()
@@ -94,28 +97,40 @@ const validateEmpty = (rule: any, value: any, callback: any) => {
 
 const ruleForm = reactive({
   username: '',
+  email: '',
   password: ''
 })
 
 const rules = reactive<FormRules>({
-  username: [{ validator: validateEmpty, trigger: 'blur' }],
+  // username: [{ validator: validateEmpty, trigger: 'blur' }],
+  email: [{ validator: validateEmpty, trigger: 'blur' }],
   password: [{ validator: validateEmpty, trigger: 'blur' }]
 })
 
-const submitForm = (formEl: FormInstance | undefined) => {
+const submitForm = async (formEl: FormInstance | undefined) => {
   if (!formEl) return
-  formEl.validate(async (valid) => {
+
+  // Modify validate callback to return a Promise<void> instead of Promise<false | undefined>
+  formEl.validate(async (valid): Promise<void> => {
     if (valid) {
-      const { error, data, response } = await fetchUsers(ruleForm)
+      // Use Supabase to log in the user
+      const { email, password } = ruleForm
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password
+      })
+
       if (error) {
-        console.log(response)
+        console.error('Login failed:', error.message)
         return
       }
-      console.log(data.token)
-      router.push('/')
+
+      // Successfully logged in
+      console.log('User logged in:', data.user)
+      router.push('/') // Redirect to home/dashboard after login
     } else {
       console.log('error submit!')
-      return false
+      return // Ensure no false or undefined is returned
     }
   })
 }

@@ -9,7 +9,7 @@ const router = createRouter({
     {
       path: '/login',
       name: 'login',
-      component: () => import('../views/Login.vue')
+      component: () => import('@/views/Login.vue')
     },
     {
       path: '/',
@@ -25,10 +25,38 @@ const router = createRouter({
   ]
 })
 
-router.beforeEach((to, from, next) => {
-  nprogress.start()
-  next()
-})
+// router.beforeEach((to, from, next) => {
+//   nprogress.start()
+//   next()
+// })
+import supabase from '@/apis/supabase';
+
+router.beforeEach(async (to, from, next) => {
+  nprogress.start();
+
+  const {
+    data: { user }, error
+  } = await supabase.auth.getUser();
+
+  let isAuthenticated = true;
+  if (user == null) {
+    isAuthenticated = false;
+  }
+
+  if (
+    // make sure the user is authenticated
+    !isAuthenticated &&
+    // ❗️ Avoid an infinite redirect
+    to.name !== 'Login'
+  ) {
+    // redirect the user to the login page
+    return next({ name: 'Login' });
+  }
+
+  // Proceed with the navigation after the check
+  next();
+});
+
 
 router.afterEach(() => {
   nprogress.done()

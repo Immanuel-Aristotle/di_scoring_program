@@ -1,6 +1,7 @@
 <template>
   <el-footer>
-    <div>©{{ new Date().getFullYear() }} vue-admin</div>
+    <div> Destination Imagination Scoring System</div>
+    <!-- <div>©{{ new Date().getFullYear() }} vue-admin</div> -->
   </el-footer>
 </template>
 

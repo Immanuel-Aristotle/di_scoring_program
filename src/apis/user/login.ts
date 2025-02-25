@@ -3,11 +3,13 @@ import service from '@/apis/client/service'
 export interface User {
   id: number
   username: string
+  email: string
   create_time: string
 }
 
 export interface UserRequest {
   username: string
+  email: string
   password: string
 }
 

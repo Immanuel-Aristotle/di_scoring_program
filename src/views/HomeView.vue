@@ -87,7 +87,7 @@
 </template>
 
 <script lang="ts" setup>
-const data = {
+let data = {
   like: true,
   value1: 4154.564,
   value2: 1314,
