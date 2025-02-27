@@ -9,7 +9,13 @@ const router = createRouter({
     {
       path: '/login',
       name: 'login',
-      component: () => import('@/views/Login.vue')
+      component: () => import('@/views/Login.vue'),
+      // How to secure other pages when not logged in.
+      // Ref: https://medium.com/@zitko/structuring-a-vue-project-authentication-87032e5bfe16
+      meta: {
+        public: true,
+        onlyWhenLoggedOut: true
+      }
     },
     {
       path: '/',
@@ -32,25 +38,30 @@ const router = createRouter({
 import supabase from '@/apis/supabase';
 
 router.beforeEach(async (to, from, next) => {
+  const isPublic = to.matched.some(record => record.meta.public)
+  const onlyWhenLoggedOut = to.matched.some(record => record.meta.onlyWhenLoggedOut)
+  
   nprogress.start();
 
   const {
     data: { user }, error
   } = await supabase.auth.getUser();
 
+  console.log(user);
+
   let isAuthenticated = true;
-  if (user == null) {
+  if (user === null) {
     isAuthenticated = false;
   }
 
-  if (
+  if (!isPublic && !isAuthenticated
     // make sure the user is authenticated
-    !isAuthenticated &&
+    // !isAuthenticated &&
     // ❗️ Avoid an infinite redirect
-    to.name !== 'Login'
+    // to.name !== 'login'
   ) {
     // redirect the user to the login page
-    return next({ name: 'Login' });
+    return next('/login');
   }
 
   // Proceed with the navigation after the check

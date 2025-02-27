@@ -36,8 +36,8 @@
         </el-icon>
         {{ user.name }}
       </template>
-      <el-menu-item index="/user">个人中心</el-menu-item>
-      <el-menu-item index="/login">退出</el-menu-item>
+      <!-- <el-menu-item index="/user">个人中心</el-menu-item> -->
+      <el-menu-item @click="logOut" index="/login">退出</el-menu-item>
     </el-sub-menu>
   </el-menu>
 </template>
@@ -51,6 +51,12 @@ import Breadcrumb from '../Breadcrumb/Index.vue'
 const activeIndex = ref('1')
 const handleSelect = (key: string, keyPath: string[]) => {
   console.log(key, keyPath)
+}
+
+import supabase from '@/apis/supabase';
+
+const logOut = async () => {
+  const { error } = await supabase.auth.signOut();
 }
 </script>
 

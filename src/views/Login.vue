@@ -13,6 +13,10 @@
         </div>
       </template>
       <div>
+        <!--
+          el provider: Element-plus 
+          ref: https://element-plus.org/zh-CN/component/form.html#form-%E8%A1%A8%E5%8D%95
+         -->
         <el-form
           ref="ruleFormRef"
           :model="ruleForm"
@@ -25,7 +29,7 @@
             <el-input v-model.number="ruleForm.username" />
           </el-form-item> -->
           <el-form-item label="邮箱" prop="email">
-            <el-input v-model.number="ruleForm.email" />
+            <el-input type="email" v-model="ruleForm.email" />
           </el-form-item>
           <el-form-item label="密码" prop="password">
             <el-input
@@ -96,7 +100,7 @@ const validateEmpty = (rule: any, value: any, callback: any) => {
 }
 
 const ruleForm = reactive({
-  username: '',
+  // username: '',
   email: '',
   password: ''
 })

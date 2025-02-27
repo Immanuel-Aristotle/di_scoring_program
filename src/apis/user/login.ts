@@ -20,3 +20,4 @@ export interface UserResponse {
 export const fetchUsers = (req: UserRequest) => {
   return service.post<UserResponse>('/api/login', req, { silent: false })
 }
+

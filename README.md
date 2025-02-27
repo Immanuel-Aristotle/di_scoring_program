@@ -15,3 +15,11 @@ pnpm i
 ```sh
 pnpm dev
 ```
+
+## Develop log
+
+2025-02-26T13:27:10 turning off RLS makes it able to retrieve data.
+
+### data return
+
+You need to return { data: Contest, error: null } from getContests instead of { Contest, error: null } because you want to maintain the consistency of naming (data in both places).
