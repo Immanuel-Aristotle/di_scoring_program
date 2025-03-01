@@ -1,8 +1,11 @@
-const menus = [
+import { RouteRecordRaw } from 'vue-router'
+
+// type MenuDateType = RouterOptions['routes']['0']['children']
+
+const menus : RouteRecordRaw[] = [
   {
     path: '/',
     name: 'home',
-    redirect: '/',
     component: () => import('@/views/HomeView.vue'),
     meta: {
       title: '首页',
@@ -13,7 +16,6 @@ const menus = [
   {
     path: '/doc',
     name: 'doc',
-    redirect: '/',
     component: () => import('@/views/Documents.vue'),
     meta: {
       title: '文档',
@@ -121,17 +123,17 @@ const menus = [
       icon: 'Avatar',
       showMenu: true
     },
-    // children: [
-    //   {
-    //     path: '/admin/list',
-    //     name: 'adminList',
-    //     component: () => import('@/views/admin/List.vue'),
-    //     meta: {
-    //       title: '管理员列表',
-    //       showMenu: true
-    //     }
-    //   }
-    // ]
+    children: [
+      {
+        path: '/admin/list',
+        name: 'adminList',
+        component: () => import('@/views/admin/List.vue'),
+        meta: {
+          title: '管理员列表',
+          showMenu: true
+        }
+      }
+    ]
   },
   {
     path: '/sys',

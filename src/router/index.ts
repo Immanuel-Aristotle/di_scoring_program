@@ -3,6 +3,7 @@ import Layout from '@/layout/Index.vue'
 import nprogress from '@/utils/nprogress'
 import menus from './menus'
 
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
