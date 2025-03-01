@@ -2,22 +2,24 @@ const menus = [
   {
     path: '/',
     name: 'home',
+    redirect: '/',
     component: () => import('@/views/HomeView.vue'),
     meta: {
       title: '首页',
       icon: 'menu',
       showMenu: true
-    }
+    },
   },
   {
     path: '/doc',
     name: 'doc',
+    redirect: '/',
     component: () => import('@/views/Documents.vue'),
     meta: {
       title: '文档',
       icon: 'document',
       showMenu: false
-    }
+    },
   },
   {
     path: '/curd',
@@ -27,13 +29,14 @@ const menus = [
       icon: 'document',
       showMenu: true
     },
+    component: () => import('@/views/crud/Index.vue'),
     children: [
       {
-        path: '/crud/list',
+        path: '/crud/contests',
         name: 'crudList',
-        component: () => import('@/views/crud/Index.vue'),
+        component: () => import('@/views/Contests/List.vue'),
         meta: {
-          title: '列表',
+          title: 'List of Contests',
           showMenu: true
         }
       }
@@ -118,17 +121,17 @@ const menus = [
       icon: 'Avatar',
       showMenu: true
     },
-    children: [
-      {
-        path: '/admin/list',
-        name: 'adminList',
-        component: () => import('@/views/admin/List.vue'),
-        meta: {
-          title: '管理员列表',
-          showMenu: true
-        }
-      }
-    ]
+    // children: [
+    //   {
+    //     path: '/admin/list',
+    //     name: 'adminList',
+    //     component: () => import('@/views/admin/List.vue'),
+    //     meta: {
+    //       title: '管理员列表',
+    //       showMenu: true
+    //     }
+    //   }
+    // ]
   },
   {
     path: '/sys',

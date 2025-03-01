@@ -23,3 +23,10 @@ pnpm dev
 ### data return
 
 You need to return { data: Contest, error: null } from getContests instead of { Contest, error: null } because you want to maintain the consistency of naming (data in both places).
+
+## TODO list
+
+1. Sign up page
+2. Edit contest
+3. Role of different users
+4. Select the given contest to enter the grade

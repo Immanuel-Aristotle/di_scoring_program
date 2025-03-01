@@ -30,7 +30,7 @@ export default defineConfig({
       // supportTs:false,
       // logger:false,
       mockPath: './src/mock/apis', //解析路径
-      enable: true,
+      enable: false,
       watchFiles: true
     })
   ],

@@ -18,6 +18,15 @@ const router = createRouter({
       }
     },
     {
+      path: '/signup',
+      name: 'signup',
+      component: () => import('@/views/onboarding/Signup.vue'),
+      meta: {
+        public: true,
+        onlyWhenLoggedOut: true
+      }
+    },
+    {
       path: '/',
       name: 'layout',
       component: Layout,
@@ -35,39 +44,43 @@ const router = createRouter({
 //   nprogress.start()
 //   next()
 // })
-import supabase from '@/apis/supabase';
+import supabase from '@/apis/supabase'
 
 router.beforeEach(async (to, from, next) => {
-  const isPublic = to.matched.some(record => record.meta.public)
-  const onlyWhenLoggedOut = to.matched.some(record => record.meta.onlyWhenLoggedOut)
-  
-  nprogress.start();
+  const isPublic = to.matched.some((record) => record.meta.public)
+  const onlyWhenLoggedOut = to.matched.some(
+    (record) => record.meta.onlyWhenLoggedOut
+  )
+
+  nprogress.start()
 
   const {
-    data: { user }, error
-  } = await supabase.auth.getUser();
+    data: { user },
+    error
+  } = await supabase.auth.getUser()
 
-  console.log(user);
+  console.log(user)
 
-  let isAuthenticated = true;
+  let isAuthenticated = true
   if (user === null) {
-    isAuthenticated = false;
+    isAuthenticated = false
   }
 
-  if (!isPublic && !isAuthenticated
+  if (
+    !isPublic &&
+    !isAuthenticated
     // make sure the user is authenticated
     // !isAuthenticated &&
     // ❗️ Avoid an infinite redirect
     // to.name !== 'login'
   ) {
     // redirect the user to the login page
-    return next('/login');
+    return next('/login')
   }
 
   // Proceed with the navigation after the check
-  next();
-});
-
+  next()
+})
 
 router.afterEach(() => {
   nprogress.done()

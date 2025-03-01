@@ -1,24 +1,12 @@
 <template>
-  <div
-    style="
+  <div style="
       border-bottom: 1px solid #ebeef5;
       margin-bottom: 10px;
       padding-bottom: 10px;
-    "
-  >
-    <el-input
-      v-model="input"
-      style="width: 360px"
-      placeholder="请输入搜索内容"
-      clearable
-    >
+    ">
+    <el-input v-model="input" style="width: 360px" placeholder="请输入搜索内容" clearable>
       <template #prepend>
-        <el-select
-          v-model="select"
-          clearable
-          placeholder="--请选择分类--"
-          style="width: 138px"
-        >
+        <el-select v-model="select" clearable placeholder="--请选择分类--" style="width: 138px">
           <el-option label="用户" value="1" />
           <el-option label="文档" value="2" />
           <el-option label="案例案例案例案例案例案例案例" value="3" />
@@ -34,13 +22,7 @@
     <el-button type="primary" @click="drawer = true">新增</el-button>
   </div>
   <!-- 表格 -->
-  <el-table
-    :data="tableData"
-    header-cell-class-name="table-header"
-    style="width: 100%"
-    border
-    stripe
-  >
+  <el-table :data="tableData" header-cell-class-name="table-header" style="width: 100%" border stripe>
     <el-table-column fixed prop="name" label="Name" width="200" />
     <el-table-column prop="city" label="City" width="200" />
     <el-table-column prop="address" label="Address" width="600" />
@@ -54,16 +36,9 @@
     </el-table-column>
   </el-table>
   <!-- 分页 -->
-  <el-pagination
-    v-model:current-page="currentPage4"
-    v-model:page-size="pageSize4"
-    :page-sizes="[10, 20, 50, 100, 200]"
-    layout="total, prev, pager, next, sizes"
-    :total="400"
-    @size-change="handleSizeChange"
-    @current-change="handleCurrentChange"
-    style="padding-top: 15px"
-  />
+  <el-pagination v-model:current-page="currentPage4" v-model:page-size="pageSize4" :page-sizes="[10, 20, 50, 100, 200]"
+    layout="total, prev, pager, next, sizes" :total="400" @size-change="handleSizeChange"
+    @current-change="handleCurrentChange" style="padding-top: 15px" />
   <!-- 新增 -->
   <el-drawer v-model="drawer" title="新增用户">
     <detail />
@@ -78,6 +53,7 @@
     align-items: center;
   }
 }
+
 .table-header1 {
   background-color: Transparent !important;
 }
@@ -105,6 +81,6 @@ onMounted(async () => {
     console.error(error)
   }
 })
-const handleSizeChange = () => {}
-const handleCurrentChange = () => {}
+const handleSizeChange = () => { }
+const handleCurrentChange = () => { }
 </script>

@@ -3,8 +3,8 @@
     <el-card class="box-card">
       <template #header>
         <div class="card-header">
-          <span>用户登录</span>
-          <el-button type="primary" class="signup" @click="handleSignUp">Sign Up</el-button>
+          <span>Sign Up</span>
+          <el-button type="primary" class="signup" @click="redirectLogIn">Go Log In</el-button>
           <div class="dark-icon" @click="toggleDark()">
             <el-icon>
               <Moon v-if="isDark" />
@@ -20,17 +20,22 @@
          -->
         <el-form ref="ruleFormRef" :model="ruleForm" status-icon :rules="rules" label-width="60px"
           class="demo-ruleForm">
-          <!-- <el-form-item label="用户名" prop="username">
-            <el-input v-model.number="ruleForm.username" />
-          </el-form-item> -->
-          <el-form-item label="邮箱" prop="email">
-            <el-input type="email" v-model="ruleForm.email" />
+          <el-form-item label="用户名">
+            <el-input placeholder="Your username" v-model.number="ruleForm.username" />
           </el-form-item>
-          <el-form-item label="密码" prop="password">
-            <el-input v-model="ruleForm.password" type="password" autocomplete="off" />
+          <el-form-item label="邮箱">
+            <el-input placeholder="Your email" type="email" v-model="ruleForm.email" />
+          </el-form-item>
+          <el-form-item label="密码">
+            <el-input placeholder="Your password" v-model="ruleForm.password" type="password" autocomplete="off" />
+          </el-form-item>
+          <el-form-item label="Token">
+            <el-input
+              placeholder="Please enter the token provided by the administrator in order to register. Your token will determine your user role."
+              v-model="ruleForm.token" autocomplete="off" />
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="submitForm(ruleFormRef)">登录</el-button>
+            <el-button type="primary" @click="submitForm(ruleFormRef)">Sign Up</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -68,10 +73,6 @@
 .item {
   margin-bottom: 18px;
 }
-
-/* .signup {
-  float: right
-} */
 </style>
 
 <script lang="ts" setup>
@@ -105,16 +106,20 @@ const validateEmail = (rule: any, email: string, callback: any) => {
   }
 };
 
+
 const ruleForm = reactive({
-  // username: '',
+  username: '',
   email: '',
-  password: ''
+  password: '',
+  token: ''
 })
 
 const rules = reactive<FormRules>({
-  // username: [{ validator: validateEmpty, trigger: 'blur' }],
+  // el-plus rule validation forms
+  username: [{ validator: validateEmpty, trigger: 'blur' }],
   email: [{ validator: validateEmail, trigger: 'blur' }],
-  password: [{ validator: validateEmpty, trigger: 'blur' }]
+  password: [{ validator: validateEmpty, trigger: 'blur' }],
+  token: [{ validator: validateEmpty, trigger: 'blur' }]
 })
 
 const submitForm = async (formEl: FormInstance | undefined) => {
@@ -124,19 +129,30 @@ const submitForm = async (formEl: FormInstance | undefined) => {
   formEl.validate(async (valid): Promise<void> => {
     if (valid) {
       // Use Supabase to log in the user
-      const { email, password } = ruleForm
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password
-      })
+      const { username, email, password, token } = ruleForm;
+
+      const { data, error } = await supabase.auth.signUp(
+        {
+          email: email,
+          password: password,
+          options: {
+            data: {
+              username: username,
+              // determines the user to be admin, AMC, appraiser, or a team
+              token: token
+            }
+          }
+        }
+      )
+
 
       if (error) {
-        console.error('Login failed:', error.message)
+        console.error('Sign up failed:', error.message)
         return
       }
 
       // Successfully logged in
-      console.log('User logged in:', data.user)
+      console.log('New user signed up:', data.user)
       router.push('/') // Redirect to home/dashboard after login
     } else {
       console.log('error submit!')
@@ -145,7 +161,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
   })
 }
 
-const handleSignUp = () => {
-  router.push('/signup')
+const redirectLogIn = () => {
+  router.push('/login')
 }
 </script>
