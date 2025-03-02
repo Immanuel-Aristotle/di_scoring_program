@@ -1,6 +1,6 @@
-import { useStorage } from '@vueuse/core'
+// import { useStorage } from '@vueuse/core'
 // import { ref } from 'vue'
-export const user = useStorage('user', { id: '1', name: 'wang', role: 'admin' })
+// export const user = useStorage('user', { id: '1', name: 'wang', role: 'admin' })
 
 // stores/userStore.js
 import { defineStore } from 'pinia'

@@ -1,7 +1,7 @@
 <template>
   <el-footer>
     <div> Destination Imagination Scoring System</div>
-    <!-- <div>©{{ new Date().getFullYear() }} vue-admin</div> -->
+    <!-- <div>©{{ new Date().getFullYear() }} di_scoring_system</div> -->
   </el-footer>
 </template>
 

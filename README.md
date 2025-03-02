@@ -2,6 +2,10 @@
 
 Using the vue admin template from [github](https://github.com/vue-admin/vue-admin)
 
+This is hosted on [this github repo](https://github.com/di_scoring_system/di_scoring_system)
+
+URL for the github pages
+
 ## PNPM actions
 
 ### Install dependencies
