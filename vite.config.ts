@@ -9,7 +9,7 @@ import { viteMockServe } from 'vite-plugin-mock'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: process.env.NODE_ENV === "production" ? "./" : "/",
+  base: process.env.NODE_ENV === "production" ? "/di_scoring_program" : "/",
   // 'production' ? '/di_scoring_system/' : '',
   server: {
     watch: { usePolling: true },
