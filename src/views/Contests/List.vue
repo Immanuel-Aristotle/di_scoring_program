@@ -45,19 +45,16 @@
 import { ref } from 'vue';
 import addContests from './crud/AddContests.vue';
 import editContests from './crud/EditContests.vue';
-// import { defineComponent } from 'vue';
 import database from '@/apis/crud/database';
 import router from '@/router/index';
 
 import { useStore } from '@/stores';
 const Store = useStore();
-import { useUserStore } from '@/stores/user';
 import { ElMessageBox } from 'element-plus';
-const userStore = useUserStore();
 
-// const userAuth = userStore.fetchUser();
-// console.log(userAuth);
-const deleteRadio = ref('false')
+const addDrawer = ref(false);
+const editDrawer = ref(false);
+const deleteDrawer = ref(false);
 
 export default {
   name: 'ContestsList',
@@ -91,11 +88,10 @@ export default {
         console.error('Error deleting the selected data:', error);
       } else {
         console.log('Successfully delete the item from table.');
-        // deleteDrawer = false
       }
     },
-    chooseContest(chosenID: number) {
-      // const chosenID = this.Contests[index].id;
+    chooseContest(index: number) {
+      const chosenID = this.Contests[index].id;
       Store.setContestIDNextLevel(chosenID);
       router.push({ name: 'parentCriteriaList' });
       console.log("Set contest ID to " + chosenID);
@@ -104,6 +100,7 @@ export default {
     async handleEdit(index: number) {
       const editID = this.Contests[index].id;
       Store.setContestIDEdit(editID);
+
       // editDrawer.value = true;
     },
     confirmDelete() {
@@ -118,10 +115,7 @@ export default {
         })
     },
     handleDeleteButton(index: number) {
-      console.log(index);
-      console.log(this.Contests[index].id);
       Store.setChosenContestIDForDelete(this.Contests[index].id);
-      console.log(Store.chosenContestIDForDelete);
     }
   },
 };

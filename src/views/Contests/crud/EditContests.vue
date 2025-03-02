@@ -1,11 +1,9 @@
 <template>
   <el-form :model="form" label-width="auto" style="max-width: 600px">
     <el-form-item label="Title">
-      <!-- :placeholder="[[contestRow[0].title]]" -->
       <el-input v-model="form.title" />
     </el-form-item>
     <el-form-item label="Season">
-      <!-- :placeholder="[[contestRow[0].season]]" -->
       <el-input v-model="form.season" />
     </el-form-item>
     <el-form-item label="Type">
@@ -17,54 +15,15 @@
     </el-form-item>
   </el-form>
 </template>
+
 <script lang="ts">
 import database from '@/apis/crud/database';
 import { useStore } from '@/stores';
-import { reactive } from 'vue'
+import { reactive, onMounted, onActivated } from 'vue';
 
 const Store = useStore();
-
-
-
-const form = reactive({
-  // TODO: get the data of the selected row
-  title: '',
-  season: '',
-  type: '',
-})
-
-export default {
-  name: 'EditContests',
-
-  data() {
-    return {
-      contestRow: [] as any[],
-    };
-  },
-
-  async mounted() {
-    this.whenCreated();
-  },
-
-  methods: {
-    async whenCreated() {
-      // Fetch contest data for this row when the component is created
-      const { data: contestRow, error } = await database.methods.getContestByID(Store.chosenContestIDForEdit);
-      console.log(contestRow);
-      if (error) {
-        console.error('Error fetching contests:', error);
-      } else {
-        this.contestRow = contestRow || [];
-        // contestData = contestRow || [];
-      };
-    },
-  }
-}
-</script>
-<script lang="ts" setup>
-// import { reactive } from 'vue'
-// import supabase from '@/apis/supabase';
 import List from '../List.vue';
+import { onClickOutside } from '@vueuse/core';
 
 // do not use same name with ref
 // const form = reactive({
@@ -74,19 +33,53 @@ import List from '../List.vue';
 //   type: 'e.g.: Engineering',
 // })
 
+export default {
+  name: 'EditContests',
 
-const onSubmit = () => {
-  const submit = async () => {
-    const { data: submission, error } = await database.methods.editContestRow(Store.chosenContestIDForEdit, form.title, form.season, form.type)
-    return submission
-  };
-  submit()
-  List.methods?.whenCreated()
-}
+  setup() {
+    // Reactive form data
+    const form = reactive({
+      title: '',
+      season: '',
+      type: '',
+    });
+
+    // Reactive contestRow array
+    const contestRow = reactive<any[]>([]);
+
+    // Fetch data when the component is mounted
+    onMounted(async () => {
+      await whenCreated();
+    });
+
+    // onClickOutside(
+    // )
 
 
-// const onCancel = () => {
-//   drawer.value = false
-//   console.log('Cancel adding new contest.')
-// }
+    // Fetch function
+    async function whenCreated() {
+      const { data, error } = await database.methods.getContestByID(Store.chosenContestIDForEdit);
+      if (error) {
+        console.error('Error fetching contests:', error);
+      } else {
+        contestRow.push(...(data || [])); // Populate contestRow reactively
+        if (contestRow.length > 0) {
+          form.title = contestRow[0].title || '';
+          form.season = contestRow[0].season || '';
+          form.type = contestRow[0].type || '';
+        }
+      };
+    };
+    const onSubmit = () => {
+      const submit = async () => {
+        const { data: submission, error } = await database.methods.editContestRow(Store.chosenContestIDForEdit, form.title, form.season, form.type)
+        return submission
+      };
+      submit()
+      List.methods?.whenCreated()
+    }
+
+    return { form, contestRow, whenCreated, onSubmit };
+  },
+};
 </script>

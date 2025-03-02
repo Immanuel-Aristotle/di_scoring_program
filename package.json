@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "predelploy": "pnpm run build",
-    "deploy": "gh-pages -d build",
+    "deploy": "gh-pages -d dist/",
     "build": "run-p type-check build-only",
     "preview": "vite preview",
     "build-only": "vite build",

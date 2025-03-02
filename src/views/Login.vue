@@ -18,19 +18,19 @@
           el provider: Element-plus 
           ref: https://element-plus.org/zh-CN/component/form.html#form-%E8%A1%A8%E5%8D%95
          -->
-        <el-form ref="ruleFormRef" :model="ruleForm" status-icon :rules="rules" label-width="60px"
+        <el-form ref="ruleFormRef" :model="loginForm" status-icon :rules="rules" label-width="60px"
           class="demo-ruleForm">
           <!-- <el-form-item label="用户名" prop="username">
             <el-input v-model.number="ruleForm.username" />
           </el-form-item> -->
-          <el-form-item label="邮箱" prop="email">
-            <el-input type="email" v-model="ruleForm.email" />
+          <el-form-item label="Email" prop="email">
+            <el-input placeholder="Your email" type="email" v-model="loginForm.email" />
           </el-form-item>
-          <el-form-item label="密码" prop="password">
-            <el-input v-model="ruleForm.password" type="password" autocomplete="off" />
+          <el-form-item label="Password" prop="password">
+            <el-input placeholder="Your password" v-model="loginForm.password" type="password" autocomplete="off" show-password />
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="submitForm(ruleFormRef)">登录</el-button>
+            <el-button type="primary" @click="submitForm(ruleFormRef)">Log in</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -81,34 +81,13 @@ import { toggleDark, isDark } from '@/stores/dark'
 import type { FormInstance, FormRules } from 'element-plus'
 import supabase from '@/apis/supabase'  // Import supabase client
 import { useUserStore } from '@/stores/user'
-import { useStore } from '@/stores'
 const UserStore = useUserStore();
 
 const ruleFormRef = ref<FormInstance>()
 const router = useRouter()
+import { validateEmail, validateEmpty } from '@/apis/client/login'
 
-const validateEmpty = (rule: any, value: any, callback: any) => {
-  if (value === '') {
-    callback(new Error('The value should not be empty.'))
-  } else {
-    callback()
-  }
-}
-
-const validateEmail = (rule: any, email: string, callback: any) => {
-  const ifValid = String(email)
-    .toLowerCase()
-    .match(
-      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    );
-  if (!ifValid) {
-    callback(new Error('The email is not valid'))
-  } else {
-    callback()
-  }
-};
-
-const ruleForm = reactive({
+const loginForm = reactive({
   // username: '',
   email: '',
   password: ''
@@ -116,7 +95,7 @@ const ruleForm = reactive({
 
 const rules = reactive<FormRules>({
   // username: [{ validator: validateEmpty, trigger: 'blur' }],
-  email: [{ validator: validateEmail, trigger: 'blur' }],
+  email: [{ validator: validateEmpty, trigger: 'blur' }, { validator: validateEmail, trigger: 'blur' }],
   password: [{ validator: validateEmpty, trigger: 'blur' }]
 })
 
@@ -127,7 +106,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
   formEl.validate(async (valid): Promise<void> => {
     if (valid) {
       // Use Supabase to log in the user
-      const { email, password } = ruleForm
+      const { email, password } = loginForm
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password
@@ -142,7 +121,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
       console.log('User logged in:', data.user)
       UserStore.setUser(data.user);
       console.log(UserStore.user)
-      
+
       router.push('/') // Redirect to home/dashboard after login
     } else {
       console.log('error submit!')

@@ -31,19 +31,20 @@ const form = reactive({
 
 const onSubmit = () => {
   const submit = async () => {
+    const { title, season, type } = form;
     const { data: submission, error } = await supabase
       .from('Contests')
       .insert([
-        { title: form.title, season: form.season, type: form.type },
+        { title: title, season: season, type: type },
       ])
       .select()
-      if (error) {
-        console.error('Error submitting a new data to the database:', error);
-        return
-      } else {
-        console.log('A new data submitted!');
-      };
-      return submission
+    if (error) {
+      console.error('Error submitting a new data to the database:', error);
+      return
+    } else {
+      console.log('A new data submitted!');
+    };
+    return submission
   }
   submit()
   List.methods?.whenCreated()

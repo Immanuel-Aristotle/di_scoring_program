@@ -6,7 +6,7 @@
     <div style="padding-bottom: 15px">
       <el-button type="primary" @click="addDrawer = true">Add a new child criterion</el-button>
     </div>
-    <el-table :data="childCriteria" stripe border style="width: 100%">
+    <el-table :data="childCriteria" height="500" stripe border style="width: 100%">
       <el-table-column prop="Parent_Criteria.Contests.season" label="Season" width="100" fixed></el-table-column>
       <el-table-column prop="Parent_Criteria.criteria_alphabet" label="Parent Criterion" width="100"
         fixed></el-table-column>
@@ -22,6 +22,9 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-drawer>
+      
+    </el-drawer>
   </div>
 </template>
 <script lang="ts">

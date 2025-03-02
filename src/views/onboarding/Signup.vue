@@ -18,21 +18,22 @@
           el provider: Element-plus 
           ref: https://element-plus.org/zh-CN/component/form.html#form-%E8%A1%A8%E5%8D%95
          -->
-        <el-form ref="ruleFormRef" :model="ruleForm" status-icon :rules="rules" label-width="60px"
+        <el-form ref="ruleFormRef" :model="signUpForm" status-icon :rules="rules" label-width="60px"
           class="demo-ruleForm">
-          <el-form-item label="用户名">
-            <el-input placeholder="Your username" v-model.number="ruleForm.username" />
+          <el-form-item label="Username" prop="username">
+            <el-input placeholder="Your username" v-model="signUpForm.username" />
           </el-form-item>
-          <el-form-item label="邮箱">
-            <el-input placeholder="Your email" type="email" v-model="ruleForm.email" />
+          <el-form-item label="Email" prop="email">
+            <el-input placeholder="Your email" type="email" v-model="signUpForm.email" />
           </el-form-item>
-          <el-form-item label="密码">
-            <el-input placeholder="Your password" v-model="ruleForm.password" type="password" autocomplete="off" />
+          <el-form-item label="Password" prop="password">
+            <el-input placeholder="Your password" v-model="signUpForm.password" type="password" autocomplete="off"
+              show-password />
           </el-form-item>
-          <el-form-item label="Token">
-            <el-input
+          <el-form-item label="Token" prop="token">
+            <el-input :autosize="{ minRows: 1, maxRows: 3 }" type="textarea"
               placeholder="Please enter the token provided by the administrator in order to register. Your token will determine your user role."
-              v-model="ruleForm.token" autocomplete="off" />
+              v-model="signUpForm.token" autocomplete="off" />
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="submitForm(ruleFormRef)">Sign Up</el-button>
@@ -79,45 +80,27 @@
 import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { toggleDark, isDark } from '@/stores/dark'
-import type { FormInstance, FormRules } from 'element-plus'
+import { ElMessageBox, type FormInstance, type FormRules } from 'element-plus'
 import supabase from '@/apis/supabase'  // Import supabase client
 
 const ruleFormRef = ref<FormInstance>()
 const router = useRouter()
 
-const validateEmpty = (rule: any, value: any, callback: any) => {
-  if (value === '') {
-    callback(new Error('The value should not be empty.'))
-  } else {
-    callback()
-  }
-}
+import { validateEmail, validateEmpty } from '@/apis/client/login'
 
-const validateEmail = (rule: any, email: string, callback: any) => {
-  const ifValid = String(email)
-    .toLowerCase()
-    .match(
-      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    );
-  if (!ifValid) {
-    callback(new Error('The email is not valid'))
-  } else {
-    callback()
-  }
-};
-
-
-const ruleForm = reactive({
+const signUpForm = reactive({
   username: '',
   email: '',
   password: '',
   token: ''
 })
 
+
+
 const rules = reactive<FormRules>({
   // el-plus rule validation forms
   username: [{ validator: validateEmpty, trigger: 'blur' }],
-  email: [{ validator: validateEmail, trigger: 'blur' }],
+  email: [{ validator: validateEmpty, trigger: 'blur' }, { validator: validateEmail, trigger: 'blur' }],
   password: [{ validator: validateEmpty, trigger: 'blur' }],
   token: [{ validator: validateEmpty, trigger: 'blur' }]
 })
@@ -129,7 +112,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
   formEl.validate(async (valid): Promise<void> => {
     if (valid) {
       // Use Supabase to log in the user
-      const { username, email, password, token } = ruleForm;
+      const { username, email, password, token } = signUpForm;
 
       const { data, error } = await supabase.auth.signUp(
         {
@@ -145,15 +128,16 @@ const submitForm = async (formEl: FormInstance | undefined) => {
         }
       )
 
-
       if (error) {
         console.error('Sign up failed:', error.message)
         return
       }
+      ElMessageBox.alert('Please go and check your email for verification', 'Title', {
+        // if you want to disable its autofocus
+        // autofocus: false,
+        confirmButtonText: 'OK'
+      })
 
-      // Successfully logged in
-      console.log('New user signed up:', data.user)
-      router.push('/') // Redirect to home/dashboard after login
     } else {
       console.log('error submit!')
       return // Ensure no false or undefined is returned
