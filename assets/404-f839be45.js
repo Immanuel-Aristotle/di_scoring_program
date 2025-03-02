@@ -1,0 +1,1 @@
+import{d as o,q as t,f as n,I as s,o as a}from"./index-0862b214.js";const u=o({__name:"404",setup(r){return(l,e)=>(a(),t(s,null,[e[0]||(e[0]=n("h1",null,"404",-1)),e[1]||(e[1]=n("p",null,"The page is not found.",-1))],64))}});export{u as default};

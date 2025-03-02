@@ -1,0 +1,1 @@
+import{_ as s,q as _,f as t,o}from"./index-0862b214.js";const n={},c={class:"sys"};function a(r,e){return o(),_("div",c,e[0]||(e[0]=[t("h1",null,"系统设置",-1)]))}const f=s(n,[["render",a],["__scopeId","data-v-19f9b5e6"]]);export{f as default};
