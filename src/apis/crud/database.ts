@@ -46,7 +46,7 @@ export default {
     },
 
     async deleteByID(table: string, id: number) {
-      let { error } = await supabase.from(table).delete().eq('id', id)
+      const { error } = await supabase.from(table).delete().eq('id', id)
       // console.log(Contest)
       if (error) {
         console.error('Error fetching contests:', error)

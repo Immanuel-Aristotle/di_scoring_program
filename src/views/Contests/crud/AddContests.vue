@@ -1,13 +1,13 @@
 <template>
   <el-form :model="form" label-width="auto" style="max-width: 600px">
     <el-form-item label="Title">
-      <el-input v-model="form.title" />
+      <el-input placeholder="往事探险" v-model="form.title" />
     </el-form-item>
     <el-form-item label="Season">
-      <el-input placeholder="e.g." v-model="form.season" />
+      <el-input placeholder="e.g. 2024-2025" v-model="form.season" />
     </el-form-item>
     <el-form-item label="Type">
-      <el-input v-model="form.type" />
+      <el-input placeholder="e.g.: Engineering" v-model="form.type" />
     </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="onSubmit">Create</el-button>
@@ -25,8 +25,8 @@ import List from '../List.vue';
 const form = reactive({
   // TODO: get the data of the selected row
   title: '',
-  season: 'e.g. 2024',
-  type: 'e.g.: Engineering',
+  season: '',
+  type: '',
 })
 
 const onSubmit = () => {

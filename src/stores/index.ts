@@ -5,6 +5,8 @@ export const useStore = defineStore('proceedStore', {
     chosenContestIDForNextLevel: 0,
     // The chosen contest ID in list for editing the particular contest
     chosenContestIDForEdit: 0,
+    // For delete
+    chosenContestIDForDelete: 0,
     // The chosen parent criteria ID in list for entering the child criteria
     chosenParentCriteriaIDForNextLevel: 0,
     // The chosen parent criteria ID in list for editing the particular criteria
@@ -23,7 +25,10 @@ export const useStore = defineStore('proceedStore', {
     },
     setParentCriteriaIDNextLevel(value: number) {
       this.chosenParentCriteriaIDForNextLevel = value;
-    }
+    },
+    setChosenContestIDForDelete(value: number) {
+      this.chosenContestIDForDelete = value;
+    },
   }
 });
 

@@ -1,9 +1,11 @@
 <template>
   <el-form :model="form" label-width="auto" style="max-width: 600px">
     <el-form-item label="Title">
-      <el-input placeholder=this.contestRow[0].title v-model="form.title" />
+      <!-- :placeholder="[[contestRow[0].title]]" -->
+      <el-input v-model="form.title" />
     </el-form-item>
     <el-form-item label="Season">
+      <!-- :placeholder="[[contestRow[0].season]]" -->
       <el-input v-model="form.season" />
     </el-form-item>
     <el-form-item label="Type">
@@ -22,7 +24,7 @@ import { reactive } from 'vue'
 
 const Store = useStore();
 
-// let contestData = [] as any[];
+
 
 const form = reactive({
   // TODO: get the data of the selected row
@@ -40,7 +42,7 @@ export default {
     };
   },
 
-  async created() {
+  async mounted() {
     this.whenCreated();
   },
 
@@ -61,7 +63,7 @@ export default {
 </script>
 <script lang="ts" setup>
 // import { reactive } from 'vue'
-import supabase from '@/apis/supabase';
+// import supabase from '@/apis/supabase';
 import List from '../List.vue';
 
 // do not use same name with ref
