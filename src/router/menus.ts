@@ -31,14 +31,32 @@ const menus : RouteRecordRaw[] = [
       icon: 'document',
       showMenu: true
     },
-    component: () => import('@/views/crud/Index.vue'),
+    // component: () => import('@/views/crud/Index.vue'),
     children: [
       {
         path: '/crud/contests',
-        name: 'crudList',
+        name: 'contestList',
         component: () => import('@/views/Contests/List.vue'),
         meta: {
-          title: 'List of Contests',
+          title: 'Contests',
+          showMenu: true
+        }
+      },
+      {
+        path: '/crud/parent_criteria',
+        name: 'parentCriteriaList',
+        component: () => import('@/views/Criteria/Parent.vue'),
+        meta: {
+          title: 'Parent Criteria',
+          showMenu: true
+        }
+      },
+      {
+        path: '/crud/child_criteria',
+        name: 'childCriteriaList',
+        component: () => import('@/views/Criteria/Children.vue'),
+        meta: {
+          title: 'Child Criteria',
           showMenu: true
         }
       }

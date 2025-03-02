@@ -47,7 +47,6 @@ const onSubmit = () => {
   }
   submit()
   List.methods?.whenCreated()
-  List.methods?.onCancel()
 }
 
 // const onCancel = () => {

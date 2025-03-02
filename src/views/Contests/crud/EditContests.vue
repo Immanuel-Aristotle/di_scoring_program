@@ -1,52 +1,87 @@
 <template>
   <el-form :model="form" label-width="auto" style="max-width: 600px">
     <el-form-item label="Title">
-      <el-input v-model="form.title" />
+      <el-input placeholder=this.contestRow[0].title v-model="form.title" />
     </el-form-item>
     <el-form-item label="Season">
-      <el-input placeholder="e.g." v-model="form.season" />
+      <el-input v-model="form.season" />
     </el-form-item>
     <el-form-item label="Type">
       <el-input v-model="form.type" />
     </el-form-item>
     <el-form-item>
-      <el-button type="primary" @click="onSubmit">Create</el-button>
+      <el-button type="primary" @click="onSubmit">Update</el-button>
       <!-- <el-button type="primary" @click="defineComponent.onCancel">Cancel</el-button> -->
     </el-form-item>
   </el-form>
 </template>
-
-<script lang="ts" setup>
+<script lang="ts">
+import database from '@/apis/crud/database';
+import { useStore } from '@/stores';
 import { reactive } from 'vue'
-import supabase from '@/apis/supabase';
-import List from '../List.vue';
 
-// do not use same name with ref
+const Store = useStore();
+
+// let contestData = [] as any[];
+
 const form = reactive({
   // TODO: get the data of the selected row
   title: '',
   season: '',
-  type: 'e.g.: Engineering',
+  type: '',
 })
+
+export default {
+  name: 'EditContests',
+
+  data() {
+    return {
+      contestRow: [] as any[],
+    };
+  },
+
+  async created() {
+    this.whenCreated();
+  },
+
+  methods: {
+    async whenCreated() {
+      // Fetch contest data for this row when the component is created
+      const { data: contestRow, error } = await database.methods.getContestByID(Store.chosenContestIDForEdit);
+      console.log(contestRow);
+      if (error) {
+        console.error('Error fetching contests:', error);
+      } else {
+        this.contestRow = contestRow || [];
+        // contestData = contestRow || [];
+      };
+    },
+  }
+}
+</script>
+<script lang="ts" setup>
+// import { reactive } from 'vue'
+import supabase from '@/apis/supabase';
+import List from '../List.vue';
+
+// do not use same name with ref
+// const form = reactive({
+//   // TODO: get the data of the selected row
+//   title: '',
+//   season: '',
+//   type: 'e.g.: Engineering',
+// })
+
 
 const onSubmit = () => {
   const submit = async () => {
-    const { data: submission, error } = await supabase
-      .from('Contest')
-      .insert([
-        { title: form.title, season: form.season, type: form.type },
-      ])
-      .select()
-    if (error) {
-      console.error('Error submitting a new data to the database:', error);
-    } else {
-      console.log('A new data submitted!');
-      return submission
-    };
-  }
+    const { data: submission, error } = await database.methods.editContestRow(Store.chosenContestIDForEdit, form.title, form.season, form.type)
+    return submission
+  };
   submit()
-  List.method.whenCreated()
+  List.methods?.whenCreated()
 }
+
 
 // const onCancel = () => {
 //   drawer.value = false
