@@ -1,0 +1,1 @@
+import{_ as t,q as s,f as o,o as _}from"./index-322f1065.js";const n={},a={class:"about"};function c(r,e){return _(),s("div",a,e[0]||(e[0]=[o("h1",null,"三级菜单",-1)]))}const i=t(n,[["render",c]]);export{i as default};
