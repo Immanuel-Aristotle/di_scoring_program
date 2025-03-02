@@ -52,4 +52,4 @@ jobs:
         #   publish_dir: dist
         # publish_dir: ./docs
       - run: cd dist/
-          pnpm dev .
+      - run: pnpm dev .
