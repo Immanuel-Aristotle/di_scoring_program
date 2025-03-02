@@ -62,6 +62,7 @@ router.beforeEach(async (to, from, next) => {
 
   console.log(user)
 
+
   let isAuthenticated = true
   if (user === null) {
     isAuthenticated = false

@@ -4,10 +4,10 @@
       <h1>List of Parent Criteria from the chosen contest</h1>
     </div>
     <div style="padding-bottom: 15px">
-      <el-button type="primary" @click="addDrawer = true">Add a new contest</el-button>
+      <el-button type="primary" @click="addDrawer = true">Add a new parent criterion</el-button>
     </div>
     <el-table :data="parentCriteria" stripe border style="width: 100%">
-      <el-table-column prop="Contests.title" label="Season" width="180" fixed></el-table-column>
+      <el-table-column prop="Contests.season" label="Season" width="180" fixed></el-table-column>
       <el-table-column prop="criteria_alphabet" label="Alphabet" width="180"></el-table-column>
       <el-table-column prop="criteria_title" label="Title" width="180"></el-table-column>
       <el-table-column fixed="right" label="Operations" width="180">
@@ -23,9 +23,10 @@
 <script lang="ts">
 import { ref } from 'vue';
 import database from '@/apis/crud/database';
+import router from '@/router/index';
+
 import { useStore } from '@/stores';
 const Store = useStore();
-import router from '@/router/index';
 
 export default {
   name: 'ContestsList',
@@ -49,16 +50,15 @@ export default {
       if (error) {
         console.error('Error fetching contests:', error);
       } else {
-        this.parentCriteria = parentCriteria || [];
+        this.parentCriteria = parentCriteria;
       };
     },
     chooseParentCriteria(index: number) {
-      console.log(this.parentCriteria);
       const chosenID = this.parentCriteria[index].id;
       Store.setParentCriteriaIDNextLevel(chosenID);
       router.push({ name: 'childCriteriaList' });
-      console.log("set ParentCriteriaIDNextLevel to " + chosenID);
-      console.log("Successfully choose the given parent criteria and route.")
+      console.log("Set ParentCriteriaIDNextLevel to " + chosenID + "and route");
+      // console.log("Successfully choose the given parent criteria and route.")
     },
     async deleteRow(index: number) {
       const deleteID = this.parentCriteria[index].id;

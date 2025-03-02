@@ -1,16 +1,19 @@
 <template>
   <div class="about">
     <div class="header">
-      <h1>List of Parent Criteria from the chosen contest</h1>
+      <h1>List of Child Criteria from the chosen parent criterion</h1>
     </div>
     <div style="padding-bottom: 15px">
-      <el-button type="primary" @click="addDrawer = true">Add a new contest</el-button>
+      <el-button type="primary" @click="addDrawer = true">Add a new child criterion</el-button>
     </div>
     <el-table :data="childCriteria" stripe border style="width: 100%">
-      <el-table-column prop="Parent_Criteria.criteria_alphabet" label="Parent Criterion" width="180" fixed></el-table-column>
-      <el-table-column prop="child_criterion_number" label="Criterion Number" width="180"></el-table-column>
+      <el-table-column prop="Parent_Criteria.Contests.season" label="Season" width="100" fixed></el-table-column>
+      <el-table-column prop="Parent_Criteria.criteria_alphabet" label="Parent Criterion" width="100"
+        fixed></el-table-column>
+      <el-table-column prop="child_criterion_number" label="Criterion Number" width="100"></el-table-column>
       <el-table-column prop="criterion_title" label="Title" width="180"></el-table-column>
-      <el-table-column prop="criterion_description" label="Description" width="360"></el-table-column>
+      <el-table-column prop="criterion_description" label="Description" width="300"></el-table-column>
+      <el-table-column prop="displayScore" label="Score" width="150"></el-table-column>
       <el-table-column fixed="right" label="Operations" width="180">
         <template #default="scope">
           <el-button link type="primary" size="small" @click="editDrawer = true">Edit</el-button>
@@ -26,6 +29,7 @@ import { ref } from 'vue';
 import database from '@/apis/crud/database';
 import { useStore } from '@/stores';
 const Store = useStore();
+// const queries = queryStore();
 
 export default {
   name: 'ContestsList',
@@ -51,6 +55,7 @@ export default {
       } else {
         this.childCriteria = childCriteria || [];
       };
+      this.displayScore();
     },
 
     async deleteRow(index: number) {
@@ -62,6 +67,17 @@ export default {
         console.log('Successfully delete the item from table.');
         this.whenCreated()
       }
+    },
+
+    displayScore() {
+      for (let index = 0; index < this.childCriteria.length; index++) {
+        if (!this.childCriteria[index].whether_score_by_choice) {
+          this.childCriteria[index].displayScore = "Maximum Score: " + this.childCriteria[index].maximum_score;
+        } else {
+          this.childCriteria[index].displayScore = "Score can be: " + this.childCriteria[index].choice_score_array;
+        }
+      }
+      return;
     }
   },
 };

@@ -43,6 +43,11 @@ import router from '@/router/index';
 
 import { useStore } from '@/stores';
 const Store = useStore();
+import { useUserStore } from '@/stores/user';
+const userStore = useUserStore();
+
+const userAuth = userStore.fetchUser();
+console.log(userAuth);
 
 export default {
   name: 'ContestsList',
@@ -82,7 +87,7 @@ export default {
       const chosenID = this.Contests[index].id;
       Store.setContestIDNextLevel(chosenID);
       router.push({ name: 'parentCriteriaList' });
-      console.log("set contest ID to " + chosenID);
+      console.log("Set contest ID to " + chosenID);
       console.log("Successfully choose the given contest and route.")
     },
     async handleEdit(index: number) {

@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-export const useStore = defineStore('contestID', {
+export const useStore = defineStore('proceedStore', {
   state: () => ({
     // The chosen contest ID in list for entering the parent criteria
     chosenContestIDForNextLevel: 0,
@@ -24,5 +24,18 @@ export const useStore = defineStore('contestID', {
     setParentCriteriaIDNextLevel(value: number) {
       this.chosenParentCriteriaIDForNextLevel = value;
     }
-  },
+  }
 });
+
+// export const queryStore = defineStore('queryStore', {
+//   state: () => ({
+//     display: {
+//       childCriteria: [
+//         "criterion_description"
+//       ]
+//     }
+//   }),
+//   actions: {
+
+//   }
+// });

@@ -80,6 +80,9 @@ import { useRouter } from 'vue-router'
 import { toggleDark, isDark } from '@/stores/dark'
 import type { FormInstance, FormRules } from 'element-plus'
 import supabase from '@/apis/supabase'  // Import supabase client
+import { useUserStore } from '@/stores/user'
+import { useStore } from '@/stores'
+const UserStore = useUserStore();
 
 const ruleFormRef = ref<FormInstance>()
 const router = useRouter()
@@ -137,6 +140,9 @@ const submitForm = async (formEl: FormInstance | undefined) => {
 
       // Successfully logged in
       console.log('User logged in:', data.user)
+      UserStore.setUser(data.user);
+      console.log(UserStore.user)
+      
       router.push('/') // Redirect to home/dashboard after login
     } else {
       console.log('error submit!')

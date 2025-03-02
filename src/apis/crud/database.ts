@@ -62,7 +62,8 @@ export default {
         .from('Parent_Criteria')
         .select(
           `
-        Contests (title),
+        id,
+        Contests (season),
         criteria_alphabet, 
         criteria_title
       `
@@ -81,10 +82,17 @@ export default {
         .from('Child_Criteria')
         .select(
           `
-        Parent_Criteria (criteria_alphabet),
+        id,
+        Parent_Criteria (
+          criteria_alphabet,
+          Contests (season)
+        ),
         child_criterion_number, 
         criterion_title,
-        criterion_description
+        criterion_description,
+        whether_score_by_choice,
+        maximum_score,
+        choice_score_array
       `
         )
         .eq('parent_criterion', ParentCriteriaID)
@@ -113,6 +121,10 @@ export default {
         return { data: [], error }
       }
       return { data: response, error: null }
+    },
+
+    async getUser() {
+      const { data: { user } } = await supabase.auth.getUser();
     }
   }
 }

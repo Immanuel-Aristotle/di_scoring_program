@@ -28,5 +28,5 @@ You need to return { data: Contest, error: null } from getContests instead of { 
 
 1. Sign up page
 2. Edit contest
-3. Role of different users
-4. Select the given contest to enter the grade
+3. [ ] Role of different users
+4. [x] Select the given contest to enter the grade
