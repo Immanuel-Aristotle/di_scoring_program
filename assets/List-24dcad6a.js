@@ -1,0 +1,1 @@
+import{_ as t,x as s,g as o,o as _}from"./index-af83d4e5.js";const n={},a={class:"about"};function c(r,e){return _(),s("div",a,e[0]||(e[0]=[o("h1",null,"用户列表",-1)]))}const i=t(n,[["render",c]]);export{i as default};
