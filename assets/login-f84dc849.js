@@ -1,1 +1,0 @@
-const s=(i,a,e)=>{a===""?e(new Error("The value should not be empty.")):e()},o=(i,a,e)=>{String(a).toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)?e():e(new Error("The email is not valid"))};export{o as a,s as v};

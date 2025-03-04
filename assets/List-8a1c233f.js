@@ -1,0 +1,1 @@
+import{d as e}from"./database-34f12082.js";import{_ as t,x as o,g as a,o as r}from"./index-09eaad1e.js";e.methods.getUsers();const n={};const _={class:"about"};function c(d,s,i,p,l,u){return r(),o("div",_,s[0]||(s[0]=[a("h1",null,"List of users",-1)]))}const x=t(n,[["render",c]]);export{x as default};
