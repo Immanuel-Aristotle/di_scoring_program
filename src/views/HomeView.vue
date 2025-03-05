@@ -68,10 +68,20 @@
     </el-card>
   </el-col>
 </el-row> -->
-    <el-row class="bt10" v-if="userStore.user!=null && userStore.user.role == 'Administrator'">
+    <el-row class="bt10">
+      <el-col :span=24>
+        <el-card shadow="hover" class="card-font">
+          This is the Destination Imagination Scoring System.
+        </el-card>
+        <el-card shadow="hover" class="card-font">
+          ⚠️ NOTE: Refreshing the page will automatically log you out.
+        </el-card>
+      </el-col>
+    </el-row>
+    <el-row class="bt10" v-if="userStore.user != null && userStore.user.role == 'Administrator'">
       <el-col :span=24>
         <el-card shadow="hover" class="content-font">
-          This is the Destination Imagination Scoring System. You're now logged in as an administrator.
+          You're now logged in as an administrator.
         </el-card>
       </el-col>
       <el-col :span=12>
@@ -84,9 +94,31 @@
           The sidebar menu provides the entry for other utilities.
         </el-card>
       </el-col>
-      <el-col>
-        <el-card>
-          <el-button @click="onClick">Go Manage Contests</el-button>
+      <el-col :span="12">
+        <el-card shadow="hover" class="content-font">
+          <el-button @click="router.push({ name: 'contestList' })">Go Manage Contests</el-button>
+        </el-card>
+      </el-col>
+      <el-col :span="12">
+        <el-card shadow="hover" class="content-font">
+          <el-button @click="router.push({ name: 'Scores' })">Go Manage Scores</el-button>
+        </el-card>
+      </el-col>
+    </el-row>
+    <el-row class="bt10" v-if="userStore.user != null && userStore.user.role == 'Appraiser'">
+      <el-col :span=24>
+        <el-card shadow="hover" class="content-font">
+          You're now logged in as an appraiser.
+        </el-card>
+      </el-col>
+    </el-row>
+    <el-row class="bt10" v-if="userStore.user != null && userStore.user.role == 'Team'">
+      <el-col :span=24>
+        <el-card shadow="hover" class="content-font">
+          Hello, team {{ userStore.user.username }}! You're now logged in as a team member.
+        </el-card>
+        <el-card shadow="hover" class="content-font">
+          You can view the scores of the contest you've joined.
         </el-card>
       </el-col>
     </el-row>
@@ -106,14 +138,20 @@ const onClick = () => {
 
 <style scoped lang="scss">
 .card-font {
-  font-size: 3em;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.2em;
 }
 
 .content-font {
+  text-align: center;
   font-size: 16px;
+  margin-bottom: 4px;
 }
 
 .bt10 {
+  align-content: center;
+  align-items: center;
   padding-bottom: 10px;
 }
 

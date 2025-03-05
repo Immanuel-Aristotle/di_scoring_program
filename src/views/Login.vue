@@ -84,6 +84,7 @@ import supabase from '@/apis/supabase'  // Import supabase client
 import database from '@/apis/crud/database'
 import { useUserStore } from '@/stores/user'
 const userStore = useUserStore();
+import type { User } from '@/stores/user';
 
 const ruleFormRef = ref<FormInstance>()
 const router = useRouter()
@@ -122,10 +123,13 @@ const submitForm = async (formEl: FormInstance | undefined) => {
       const response = await database.methods.getPassword(email)
 
       if (response.data && response.data[0] && response.data[0].password === password) {
+
+        userStore.storeUser(response.data[0]);
+        // console.log(userStore.user);
+        
         ElMessageBox.alert('Login successfully! You are now redirected to the home page.', {
           confirmButtonText: 'OK'
         })
-        userStore.storeUser(response.data[0])
         router.push('/')
       } else {
         ElMessageBox.alert('The password is incorrect.', {

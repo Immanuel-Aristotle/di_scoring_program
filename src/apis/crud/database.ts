@@ -3,29 +3,7 @@
 import supabase from '@/apis/supabase'
 import type { User } from '@/stores/user'
 
-const columns = {
-  contests: `id,title,season,type`,
-  childCriteria: `
-    id,
-    Parent_Criteria (
-      criteria_alphabet,
-      Contests (season)
-    ),
-    child_criterion_number, 
-    criterion_title,
-    criterion_description,
-    whether_score_by_choice,
-    maximum_score,
-    choice_score_array
-  `,
-  parentCriteria: `
-    id,
-    Contests (season),
-    criteria_alphabet, 
-    criteria_title
-  `,
-  users: `id,role,username,email,password`
-}
+import { columns } from './columns'
 
 const errorHandler = (error) => {
   if (error) {
@@ -115,6 +93,15 @@ const editContestRow = async (
   return { data: response, error: null }
 }
 
+const getUserByEmail = async (email: string) => {
+  const { data: users, error } = await supabase
+    .from('Users')
+    .select(columns.users)
+    .eq('email', email)
+  errorHandler(error)
+  return { data: users, error: null }
+}
+
 const getUsers = async () => {
   const { data: users, error } = await supabase
     .from('Users')
@@ -124,10 +111,10 @@ const getUsers = async () => {
 }
 
 const checkEmailDuplicate = async (email: string) => {
-  const { data: users, error } = await supabase
+  const { data: users, error } = (await supabase
     .from('Users')
     .select(columns.users)
-    .eq('email', email) as { data: User[] | null, error: any }
+    .eq('email', email)) as { data: User[] | null; error: any }
   errorHandler(error)
 
   if (users && users.length > 0) {
@@ -139,10 +126,10 @@ const checkEmailDuplicate = async (email: string) => {
 }
 
 const checkUsernameDuplicate = async (username: string) => {
-  const { data: users, error } = await supabase
+  const { data: users, error } = (await supabase
     .from('Users')
     .select(columns.users)
-    .eq('username', username) as { data: User[] | null, error: any }
+    .eq('username', username)) as { data: User[] | null; error: any }
   errorHandler(error)
   if (users && users.length > 0) {
     if (users[0].username === username) {
@@ -152,12 +139,14 @@ const checkUsernameDuplicate = async (username: string) => {
   return false
 }
 
-const getPassword = async (email: string): Promise<{ data: User[] | null, error: Error | null }> => {
-  const { data: users, error } = await supabase
+const getPassword = async (
+  email: string
+): Promise<{ data: User[] | null; error: Error | null }> => {
+  const { data: users, error } = (await supabase
     .from('Users')
     .select(columns.users)
-    .eq('email', email) as { data: User[] | null, error: any }
-  
+    .eq('email', email)) as { data: User[] | null; error: any }
+
   if (error) {
     return { data: null, error: new Error(error.message) }
   }
@@ -167,6 +156,30 @@ const getPassword = async (email: string): Promise<{ data: User[] | null, error:
   }
 
   return { data: users, error: null }
+}
+
+export interface Score {
+  id: number
+  receiving_team: string
+  score_type: string
+  score_number: number
+  criterion_of_the_score: string
+  criterion_title: string
+}
+
+const getScores = async (
+  start: number = 0,
+  end: number = 9
+): Promise<{ data: Score[]; error: Error | null }> => {
+  const { data: scores, error } = (await supabase
+    .from('Scores')
+    .select(columns.scores)) as { data: Score[] | null; error: any }
+
+  if (error) {
+    console.error('Error fetching scores:', error)
+    return { data: [], error: new Error(error.message) }
+  }
+  return { data: scores || [], error: null }
 }
 
 export default {
@@ -182,7 +195,9 @@ export default {
     getUsers,
     checkUsernameDuplicate,
     checkEmailDuplicate,
-    getPassword
+    getPassword,
+    getScores,
+    getUserByEmail: getUserByEmail
     // Supabase table API
     // ref: https://supabase.com/docs/reference/javascript/select
   }

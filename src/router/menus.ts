@@ -106,30 +106,30 @@ const menus : RouteRecordRaw[] = [
     path: '/multi',
     name: 'multi',
     meta: {
-      title: '多级菜单',
-      icon: 'ForkSpoon',
+      title: 'Multi',
+      icon: 'DataAnalysis',
       showMenu: true
     },
     children: [
       {
-        path: '/multi/two',
-        name: 'multiTwo',
-        component: () => import('@/views/multi/List.vue'),
+        path: '/multi/scores',
+        name: 'Scores',
+        component: () => import('@/views/Scores/List.vue'),
         meta: {
-          title: '二级菜单',
+          title: 'Scores',
           showMenu: true
-        },
-        children: [
-          {
-            path: '/multi/two/list',
-            name: 'multiTwoList',
-            component: () => import('@/views/multi/List.vue'),
-            meta: {
-              title: '三级菜单',
-              showMenu: true
-            }
-          }
-        ]
+        } 
+        // children: [
+        //   {
+        //     path: '/multi/two/list',
+        //     name: 'multiTwoList',
+        //     component: () => import('@/views/multi/List.vue'),
+        //     meta: {
+        //       title: '三级菜单',
+        //       showMenu: true
+        //     }
+        //   }
+        // ]
       }
     ]
   },

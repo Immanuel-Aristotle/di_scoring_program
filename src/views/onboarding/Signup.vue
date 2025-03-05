@@ -27,7 +27,7 @@
             <el-input placeholder="Your email" type="email" v-model="signUpForm.email" />
           </el-form-item>
           <el-form-item label="Password" prop="password">
-            <el-input placeholder="Your password" v-model="signUpForm.password" type="password" autocomplete="off"
+            <el-input placeholder="Your password. Please remember it." v-model="signUpForm.password" type="password" autocomplete="off"
               show-password />
           </el-form-item>
           <el-form-item label="Confirm" prop="checkPass">

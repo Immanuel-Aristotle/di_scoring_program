@@ -13,6 +13,7 @@
         <el-icon>
           <IconLogo />
         </el-icon>
+        <!-- <img src="../../../components/icons/favicon.svg"> -->
         <span v-if="!isCollapse"> 后台管理系统 </span>
       </div>
       <MenuItem

@@ -23,6 +23,9 @@ export const useUserStore = defineStore('user', {
   actions: {
     storeUser(user: User | null) {
       this.user = user ?? null
+    },
+    clearUser() {
+      this.user = null
     }
   }
 })

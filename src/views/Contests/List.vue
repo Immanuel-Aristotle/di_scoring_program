@@ -80,16 +80,6 @@ export default {
         this.Contests = data || [];
       };
     },
-    async deleteRow(deleteID: number) {
-      // const deleteID = this.Contests[index].id;
-      console.log(deleteID);
-      const { error } = await database.methods.deleteByID('Contests', deleteID)
-      if (error) {
-        console.error('Error deleting the selected data:', error);
-      } else {
-        console.log('Successfully delete the item from table.');
-      }
-    },
     chooseContest(index: number) {
       const chosenID = this.Contests[index].id;
       Store.setContestIDNextLevel(chosenID);
@@ -100,9 +90,19 @@ export default {
     async handleEdit(index: number) {
       const editID = this.Contests[index].id;
       Store.setContestIDEdit(editID);
-
-      // editDrawer.value = true;
     },
+
+    async deleteRow(deleteID: number) {
+      // const deleteID = this.Contests[index].id;
+      console.log(deleteID);
+      const { error } = await database.methods.deleteByID('Contests', deleteID)
+      if (error) {
+        console.error('Error deleting the selected data:', error);
+      } else {
+        console.log('Successfully delete the item from table.');
+      }
+    },
+
     confirmDelete() {
       ElMessageBox.confirm(`Are you confirm to delete this contest? Once deleted, all related criteria/scores will be deleted, and there's no way recovering the data.`)
         .then(() => {

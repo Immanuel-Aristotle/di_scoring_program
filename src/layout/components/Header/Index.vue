@@ -34,8 +34,7 @@
         <el-icon>
           <Avatar />
         </el-icon>
-        <!-- {{ user.name }} -->
-        Admin
+        {{ userStore.user?.username || 'Guest' }}
       </template>
       <!-- <el-menu-item index="/user">个人中心</el-menu-item> -->
       <el-menu-item @click="logOut" index="/login">退出</el-menu-item>
@@ -47,7 +46,6 @@
 import { ref } from 'vue'
 import { toggleCollapse, isCollapse } from '@/stores/collapse'
 import { toggleDark, isDark } from '@/stores/dark'
-// import { user } from '@/stores/user'
 import Breadcrumb from '../Breadcrumb/Index.vue'
 const activeIndex = ref('1')
 const handleSelect = (key: string, keyPath: string[]) => {
@@ -55,9 +53,14 @@ const handleSelect = (key: string, keyPath: string[]) => {
 }
 
 import supabase from '@/apis/supabase';
+import { useUserStore } from '@/stores/user'
+import { useRouter } from 'vue-router'
+const userStore = useUserStore();
+const router = useRouter();
 
 const logOut = async () => {
-  const { error } = await supabase.auth.signOut();
+  userStore.clearUser();
+  router.push('/login');
 }
 </script>
 
