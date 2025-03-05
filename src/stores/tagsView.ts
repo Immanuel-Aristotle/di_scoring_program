@@ -3,12 +3,12 @@ import { ref } from 'vue'
 
 const defaultTagsViewItem = {
   fullPath: '/',
-  meta: { title: '首页', affix: true },
+  meta: { title: 'Home', affix: true },
   name: 'home',
   params: {},
   path: '/',
   query: {},
-  title: '首页'
+  title: 'Home'
 }
 
 export let tagsViewList = ref<tagsViewItem[]>([defaultTagsViewItem])

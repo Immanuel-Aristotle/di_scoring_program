@@ -1,10 +1,12 @@
-# vue made administrator for Destination Imagination Contests
+# Destination Imagination Scoring Manager Program
 
-Using the vue admin template from [github](https://github.com/vue-admin/vue-admin)
+## Introduction
 
-This is hosted on [this github repo](https://github.com/di_scoring_system/di_scoring_system)
+Using the vue admin template from [this github repo](https://github.com/vue-admin/vue-admin).
 
-URL for the github pages
+This program uses [supabase](https://supabase.com) as the free database manager, and [github pages](https://immanuel-aristotle.github.io/di_scoring_program/) to publish the website.
+
+It's a program made for [IB](https://ibo.org) Computer Science Internal Assessment.
 
 ## PNPM actions
 
@@ -14,10 +16,18 @@ URL for the github pages
 pnpm i
 ```
 
-### Launch dev
+### Host
 
 ```sh
 pnpm dev
+```
+
+### Build and host the static files
+
+```sh
+pnpm build
+cd ./dist
+pnpm dev .
 ```
 
 ## Develop log
@@ -26,7 +36,7 @@ pnpm dev
 
 ### data return
 
-You need to return { data: Contest, error: null } from getContests instead of { Contest, error: null } because you want to maintain the consistency of naming (data in both places).
+<!-- You need to return { data: Contest, error: null } from getContests instead of { Contest, error: null } because you want to maintain the consistency of naming (data in both places). -->
 
 ## TODO list
 

@@ -3,7 +3,7 @@
     <el-card class="box-card">
       <template #header>
         <div class="card-header">
-          <span>用户登录</span>
+          <span>Authenticate</span>
           <el-button type="primary" class="signup" @click="handleSignUp">Sign Up</el-button>
           <div class="dark-icon" @click="toggleDark()">
             <el-icon>
@@ -27,7 +27,8 @@
             <el-input placeholder="Your email" type="email" v-model="loginForm.email" />
           </el-form-item>
           <el-form-item label="Password" prop="password">
-            <el-input placeholder="Your password" v-model="loginForm.password" type="password" autocomplete="off" show-password />
+            <el-input placeholder="Your password" v-model="loginForm.password" type="password" autocomplete="off"
+              show-password />
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="submitForm(ruleFormRef)">Log in</el-button>
@@ -78,14 +79,17 @@
 import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { toggleDark, isDark } from '@/stores/dark'
-import type { FormInstance, FormRules } from 'element-plus'
+import { ElMessageBox, type FormInstance, type FormRules } from 'element-plus'
 import supabase from '@/apis/supabase'  // Import supabase client
+import database from '@/apis/crud/database'
 import { useUserStore } from '@/stores/user'
-const UserStore = useUserStore();
+const userStore = useUserStore();
 
 const ruleFormRef = ref<FormInstance>()
 const router = useRouter()
-import { validateEmail, validateEmpty } from '@/apis/client/login'
+import signup from '@/apis/user/signup'
+
+const { validateEmail, validateEmpty } = signup;
 
 const loginForm = reactive({
   // username: '',
@@ -107,20 +111,41 @@ const submitForm = async (formEl: FormInstance | undefined) => {
     if (valid) {
       // Use Supabase to log in the user
       const { email, password } = loginForm
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password
-      })
 
-      if (error) {
-        console.error('Login failed:', error.message)
+      if (await !database.methods.checkEmailDuplicate(email)) {
+        ElMessageBox.alert('The email is not registered, please sign up first.', {
+          confirmButtonText: 'OK'
+        })
         return
       }
 
+      const response = await database.methods.getPassword(email)
+
+      if (response.data && response.data[0] && response.data[0].password === password) {
+        ElMessageBox.alert('Login successfully! You are now redirected to the home page.', {
+          confirmButtonText: 'OK'
+        })
+        userStore.storeUser(response.data[0])
+        router.push('/')
+      } else {
+        ElMessageBox.alert('The password is incorrect.', {
+          confirmButtonText: 'OK'
+        })
+      }
+
+      // const { data, error } = await supabase.auth.signInWithPassword({
+      //   email,
+      //   password
+      // })
+      // if (error) {
+      //   console.error('Login failed:', error.message)
+      //   return
+      // }
+
       // Successfully logged in
-      console.log('User logged in:', data.user)
-      UserStore.setUser(data.user);
-      console.log(UserStore.user)
+      // console.log('User logged in:', data.user)
+      // UserStore.setUser(data.user);
+      // console.log(UserStore.user)
 
       router.push('/') // Redirect to home/dashboard after login
     } else {

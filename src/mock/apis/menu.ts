@@ -6,7 +6,7 @@ const menus = [
     name: 'home',
     component: 'HomeView',
     meta: {
-      title: '首页',
+      title: 'Home',
       icon: 'menu',
       showMenu: true
     }

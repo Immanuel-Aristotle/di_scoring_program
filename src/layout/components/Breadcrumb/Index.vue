@@ -1,6 +1,6 @@
 <template>
   <el-breadcrumb separator="/">
-    <el-breadcrumb-item :to="'/'">首页</el-breadcrumb-item>
+    <el-breadcrumb-item :to="'/'">Home Page</el-breadcrumb-item>
     <el-breadcrumb-item
       v-for="item in routers"
       :key="item.path"

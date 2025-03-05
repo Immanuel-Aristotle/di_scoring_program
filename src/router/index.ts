@@ -2,7 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Layout from '@/layout/Index.vue'
 import nprogress from '@/utils/nprogress'
 import menus from './menus'
-
+import { useUserStore } from '@/stores/user'
+// import supabase from '@/apis/supabase'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -45,7 +46,6 @@ const router = createRouter({
 //   nprogress.start()
 //   next()
 // })
-import supabase from '@/apis/supabase'
 
 router.beforeEach(async (to, from, next) => {
   const isPublic = to.matched.some((record) => record.meta.public)
@@ -55,32 +55,19 @@ router.beforeEach(async (to, from, next) => {
 
   nprogress.start()
 
-  const {
-    data: { user },
-    error
-  } = await supabase.auth.getUser()
-
-  console.log(user)
-
+  // Move store initialization inside the guard
+  const userStore = useUserStore()
+  const user = userStore.user
 
   let isAuthenticated = true
   if (user === null) {
     isAuthenticated = false
   }
 
-  if (
-    !isPublic &&
-    !isAuthenticated
-    // make sure the user is authenticated
-    // !isAuthenticated &&
-    // ❗️ Avoid an infinite redirect
-    // to.name !== 'login'
-  ) {
-    // redirect the user to the login page
+  if (!isPublic && !isAuthenticated) {
     return next('/login')
   }
 
-  // Proceed with the navigation after the check
   next()
 })
 

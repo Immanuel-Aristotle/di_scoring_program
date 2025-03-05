@@ -30,6 +30,10 @@
             <el-input placeholder="Your password" v-model="signUpForm.password" type="password" autocomplete="off"
               show-password />
           </el-form-item>
+          <el-form-item label="Confirm" prop="checkPass">
+            <el-input placeholder="Enter your password again" v-model="signUpForm.checkPass" type="password"
+              autocomplete="off" show-password />
+          </el-form-item>
           <el-form-item label="Token" prop="token">
             <el-input :autosize="{ minRows: 1, maxRows: 3 }" type="textarea"
               placeholder="Please enter the token provided by the administrator in order to register. Your token will determine your user role."
@@ -81,28 +85,43 @@ import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { toggleDark, isDark } from '@/stores/dark'
 import { ElMessageBox, type FormInstance, type FormRules } from 'element-plus'
+import database from '@/apis/crud/database'
+import signup from '@/apis/user/signup'
+
+const { validateEmail, validateEmpty, validateToken } = signup;
+
+import userTokens from '@/apis/user/tokens'
 import supabase from '@/apis/supabase'  // Import supabase client
+import { User, useUserStore } from '@/stores/user'
+const userStore = useUserStore();
 
 const ruleFormRef = ref<FormInstance>()
-const router = useRouter()
+import router from '@/router/index'
 
-import { validateEmail, validateEmpty } from '@/apis/client/login'
 
 const signUpForm = reactive({
   username: '',
   email: '',
   password: '',
+  checkPass: '',
   token: ''
 })
 
-
+const checkPassword = (rule: any, value: string, callback: any) => {
+  if (value !== signUpForm.password) {
+    callback(new Error("Two inputs don't match!"))
+  } else {
+    callback()
+  }
+}
 
 const rules = reactive<FormRules>({
   // el-plus rule validation forms
   username: [{ validator: validateEmpty, trigger: 'blur' }],
   email: [{ validator: validateEmpty, trigger: 'blur' }, { validator: validateEmail, trigger: 'blur' }],
   password: [{ validator: validateEmpty, trigger: 'blur' }],
-  token: [{ validator: validateEmpty, trigger: 'blur' }]
+  checkPass: [{ validator: validateEmpty, trigger: 'blur' }, { validator: checkPassword, trigger: 'blur' }],
+  token: [{ validator: validateEmpty, trigger: 'blur' }, { validator: validateToken, trigger: 'blur' }]
 })
 
 const submitForm = async (formEl: FormInstance | undefined) => {
@@ -114,29 +133,70 @@ const submitForm = async (formEl: FormInstance | undefined) => {
       // Use Supabase to log in the user
       const { username, email, password, token } = signUpForm;
 
-      const { data, error } = await supabase.auth.signUp(
-        {
-          email: email,
-          password: password,
-          options: {
-            data: {
-              username: username,
-              // determines the user to be admin, AMC, appraiser, or a team
-              token: token
-            }
-          }
-        }
-      )
+      // const { data, error } = await supabase.auth.signUp(
+      //   {
+      //     email: email,
+      //     password: password,
+      //     options: {
+      //       data: {
+      //         username: username,
+      //         // determines the user to be admin, AMC, appraiser, or a team
+      //         token: token
+      //       }
+      //     }
+      //   }
+      // )
+
+      let role = '';
+      for (let prop in userTokens) {
+        if (token == userTokens[prop]) {
+          role = prop;
+        };
+      };
+
+      if (await database.methods.checkEmailDuplicate(email)) {
+        ElMessageBox.alert('Email already exists, please use another email.', 'Notification', {
+          confirmButtonText: 'OK'
+        })
+        return
+      };
+
+      if (await database.methods.checkUsernameDuplicate(username)) {
+        ElMessageBox.alert('Username already exists, please use another username.', 'Notification', {
+          confirmButtonText: 'OK'
+        })
+        return
+      }
+
+      const { data: submission, error } = await supabase
+        .from('Users')
+        .insert([
+          { role: role, username: username, email: email, password: password }
+        ])
+        .select();
+
+      console.log(submission);
+
+      let userID = 0
+      if (submission != null) {
+        userID = submission[0].id;
+      }
+
+      const user: User = { id: userID, role: role, username, email, password };
+      userStore.storeUser(user);
 
       if (error) {
         console.error('Sign up failed:', error.message)
         return
-      }
-      ElMessageBox.alert('Please go and check your email for verification', 'Title', {
+      };
+      
+      ElMessageBox.alert('Sign up successfully! You are now redirected to the home page.', 'Notification', {
         // if you want to disable its autofocus
         // autofocus: false,
         confirmButtonText: 'OK'
       })
+
+      router.push({ name: 'home' })
 
     } else {
       console.log('error submit!')

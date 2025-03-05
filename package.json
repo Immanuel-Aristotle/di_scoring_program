@@ -5,7 +5,7 @@
   "homepage": "https://immanuel-aristotle.github.io/di_scoring_program/",
   "scripts": {
     "dev": "vite",
-    "predelploy": "pnpm run build",
+    "predeploy": "pnpm run build",
     "deploy": "gh-pages -d dist/",
     "build": "run-p type-check build-only",
     "preview": "vite preview",

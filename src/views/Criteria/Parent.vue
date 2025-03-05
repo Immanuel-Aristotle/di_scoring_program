@@ -50,7 +50,7 @@ export default {
       if (error) {
         console.error('Error fetching contests:', error);
       } else {
-        this.parentCriteria = parentCriteria;
+        this.parentCriteria = parentCriteria || [];
       };
     },
     chooseParentCriteria(index: number) {
