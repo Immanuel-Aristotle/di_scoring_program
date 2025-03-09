@@ -1,1 +1,0 @@
-import{d as o,x as t,g as n,K as s,o as a}from"./index-fc2d5d22.js";const u=o({__name:"404",setup(r){return(l,e)=>(a(),t(s,null,[e[0]||(e[0]=n("h1",null,"404",-1)),e[1]||(e[1]=n("p",null,"The page is not found.",-1))],64))}});export{u as default};
