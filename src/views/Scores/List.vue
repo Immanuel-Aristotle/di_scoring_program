@@ -5,7 +5,7 @@
   <el-input v-model="search" placeholder="Search by team name" style="margin-bottom: 20px; width: 300px" />
   <el-table :data="filteredScores" stripe border style="width: 100%">
     <el-table-column fixed prop="receiving_team" label="Receiving Team" width="180"></el-table-column>
-    <el-table-column prop="score_type" label="Score Type" width="180"></el-table-column>
+    <!-- <el-table-column prop="score_type" label="Score Type" width="180"></el-table-column> -->
     <el-table-column prop="score_number" label="Score Number" width="180"></el-table-column>
     <el-table-column prop="criterion_of_the_score" label="Criterion of the Score" width="180"></el-table-column>
     <el-table-column prop="Child_Criteria.criterion_title" label="Child Criteria" width="180"></el-table-column>

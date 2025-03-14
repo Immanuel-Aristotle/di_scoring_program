@@ -70,6 +70,11 @@
 </el-row> -->
     <el-row class="bt10">
       <el-col :span=24>
+        <!-- <el-card shadow="hover" class="card-font" >
+          <el-icon :size="150">
+            <DI-logo-full />
+          </el-icon>
+        </el-card> -->
         <el-card shadow="hover" class="card-font">
           This is the Destination Imagination Scoring System.
         </el-card>

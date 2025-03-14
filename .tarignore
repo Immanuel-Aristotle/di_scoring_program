@@ -1,0 +1,10 @@
+*.DS_Store
+desktop.ini
+Thumbs.db
+*.zip
+*.tar.gz
+*.rar
+*.7z
+*.env
+node_modules/
+dist/

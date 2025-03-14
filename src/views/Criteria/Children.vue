@@ -58,7 +58,7 @@ export default {
       } else {
         this.childCriteria = childCriteria || [];
       };
-      this.displayScore();
+      this.displayScore(this.childCriteria);
     },
 
     async deleteRow(index: number) {
@@ -72,12 +72,12 @@ export default {
       }
     },
 
-    displayScore() {
-      for (let index = 0; index < this.childCriteria.length; index++) {
-        if (!this.childCriteria[index].whether_score_by_choice) {
-          this.childCriteria[index].displayScore = "Maximum Score: " + this.childCriteria[index].maximum_score;
+    displayScore(Criteria: any) {
+      for (let index = 0; index < Criteria.length; index++) {
+        if (!Criteria[index].whether_score_by_choice) {
+          Criteria[index].displayScore = "Maximum Score: " + Criteria[index].maximum_score;
         } else {
-          this.childCriteria[index].displayScore = "Score can be: " + this.childCriteria[index].choice_score_array;
+          Criteria[index].displayScore = "Score can be: " + Criteria[index].choice_score_array;
         }
       }
       return;

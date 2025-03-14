@@ -132,7 +132,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
         })
         router.push('/')
       } else {
-        ElMessageBox.alert('The password is incorrect.', {
+        ElMessageBox.alert('The password is incorrect. Please try again.', {
           confirmButtonText: 'OK'
         })
       }

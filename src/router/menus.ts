@@ -2,7 +2,7 @@ import { RouteRecordRaw } from 'vue-router'
 
 // type MenuDateType = RouterOptions['routes']['0']['children']
 
-const menus : RouteRecordRaw[] = [
+const menus: RouteRecordRaw[] = [
   {
     path: '/',
     name: 'home',
@@ -118,7 +118,7 @@ const menus : RouteRecordRaw[] = [
         meta: {
           title: 'Scores',
           showMenu: true
-        } 
+        }
         // children: [
         //   {
         //     path: '/multi/two/list',
@@ -130,6 +130,14 @@ const menus : RouteRecordRaw[] = [
         //     }
         //   }
         // ]
+      },{
+        path: '/multi/tests',
+        name: 'Test',
+        component: () => import('@/views/Scores/Test.vue'),
+        meta: {
+          title: 'Test',
+          showMenu: true
+        }
       }
     ]
   },

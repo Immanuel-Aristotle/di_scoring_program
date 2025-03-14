@@ -8,7 +8,7 @@ This program uses [supabase](https://supabase.com) as the free database manager,
 
 It's a program made for [IB](https://ibo.org) Computer Science Internal Assessment.
 
-## PNPM actions
+## Project Setup
 
 ### Install dependencies
 
@@ -28,6 +28,13 @@ pnpm dev
 pnpm build
 cd ./dist
 pnpm dev .
+```
+
+### Deploy to Github pages
+
+```sh
+pnpm run predeploy
+pnpm run deploy
 ```
 
 ## Develop log

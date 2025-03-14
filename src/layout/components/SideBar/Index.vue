@@ -13,8 +13,8 @@
         <el-icon>
           <IconLogo />
         </el-icon>
-        <!-- <img src="../../../components/icons/favicon.svg"> -->
-        <span v-if="!isCollapse"> 后台管理系统 </span>
+        <!-- 后台管理系统  -->
+        <span v-if="!isCollapse"> DI Scoring System</span>
       </div>
       <MenuItem
         v-for="item in menus"

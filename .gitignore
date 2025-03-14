@@ -1,5 +1,7 @@
 dist/
 # Secret Key file
+out.nosync/
+*.tex
 
 tokens.ts
 

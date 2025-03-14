@@ -23,6 +23,7 @@ export const columns = {
   scores: `
     id,
     Users (
+      id,
       username
     ),
     score_number,
@@ -30,7 +31,10 @@ export const columns = {
       Parent_Criteria (
         criteria_alphabet
       ),
-      criterion_title
+      criterion_title,
+      whether_score_by_choice,
+      maximum_score,
+      choice_score_array
     )
   `
 }
